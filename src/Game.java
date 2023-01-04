@@ -23,8 +23,8 @@ public class Game {
 				int row = startRow, col = startCol;
 				0 <= row && row < 3 &&
 					0 <= col && col < 3;
-				row += offsetRow, col += offsetCol) // lol
-		{
+				row += offsetRow, col += offsetCol // lol
+		) {
 			if (getPlacement(row, col) != startPlacement) {
 				return PLAYER_NONE;
 			}
