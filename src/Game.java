@@ -17,6 +17,8 @@ public class Game {
 		board[row][col] = player;
 	}
 
+	// TODO: toString() for Client
+
 	private int checkLine(int startRow, int startCol, int offsetRow, int offsetCol) {
 		int startPlacement = getPlacement(startRow, startCol);
 		for (
