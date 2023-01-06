@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 
@@ -6,13 +7,13 @@ public class Server {
 	private ArrayList<GameHandler> games;
 	private GameHandler gameQueue;
 
-	public Server() {
-		this.server = new ServerSocket(6969);
+	public Server(int port) throws IOException {
+		this.server = new ServerSocket(port);
 		this.games = new ArrayList<GameHandler>();
-		this.queued = null;
+		this.gameQueue = null;
 	}
 
-	public void run() {
+	public void run() throws IOException {
 		while (true) {
 			Player newPlayer = new Player(server.accept());
 
@@ -22,7 +23,6 @@ public class Server {
 			}
 
 			gameQueue.setPlayer2(newPlayer);
-			gameQueue.run();
 			games.add(gameQueue);
 			gameQueue = null;
 		}
@@ -30,7 +30,18 @@ public class Server {
 
 
 	public static void main(String[] args) {
-		Server server = new Server();
-		server.run();
+		/* TESTING */ args = new String[] { "6969" };
+
+		if (args.length < 1) {
+			System.out.println("Usage: java Server <port>");
+			return;
+		}
+
+		System.out.println("Starting server on port " + args[0]);
+
+		try {
+			Server server = new Server(Integer.parseInt(args[0]));
+			server.run();
+		} catch (Exception _e) {}
 	}
 }

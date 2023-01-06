@@ -5,14 +5,17 @@ public class GameHandler {
 
 	public GameHandler(Player player1, Player player2) {
 		this.game = new Game();
-		this.player1 = player1;
-		this.player2 = player2;
+		this.setPlayer1(player1);
+		this.setPlayer2(player2);
 	}
 
-	public void setPlayer1(Player newPlayer1) { player1 = newPlayer1; }
-	public void setPlayer2(Player newPlayer2) { player2 = newPlayer2; }
+	public void setPlayer1(Player newPlayer1) {
+		player1 = newPlayer1;
+		player1.run();
+	}
 
-	public void run() {
-		// TODO: this thing
+	public void setPlayer2(Player newPlayer2) {
+		player2 = newPlayer2;
+		player2.run();
 	}
 }
