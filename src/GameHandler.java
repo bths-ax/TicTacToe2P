@@ -9,13 +9,6 @@ public class GameHandler {
 		this.setPlayer2(player2);
 	}
 
-	public void setPlayer1(Player newPlayer1) {
-		player1 = newPlayer1;
-		player1.run();
-	}
-
-	public void setPlayer2(Player newPlayer2) {
-		player2 = newPlayer2;
-		player2.run();
-	}
+	public void setPlayer1(Player newPlayer1) { player1 = newPlayer1; }
+	public void setPlayer2(Player newPlayer2) { player2 = newPlayer2; }
 }

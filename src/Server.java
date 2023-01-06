@@ -13,18 +13,16 @@ public class Server {
 		this.gameQueue = null;
 	}
 
+	public GameHandler getGameQueue() { return gameQueue; }
+	public void setGameQueue(GameHandler newGameQueue) { gameQueue = newGameQueue; }
+
+	public void addGame(GameHandler game) { games.add(game); }
+	public boolean removeGame(GameHandler game) { return games.remove(game); }
+
 	public void run() throws IOException {
 		while (true) {
 			Player newPlayer = new Player(server.accept());
-
-			if (gameQueue == null) {
-				gameQueue = new GameHandler(newPlayer, null);
-				continue;
-			}
-
-			gameQueue.setPlayer2(newPlayer);
-			games.add(gameQueue);
-			gameQueue = null;
+			new Thread(newPlayer).start();
 		}
 	}
 
