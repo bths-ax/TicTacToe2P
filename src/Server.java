@@ -21,7 +21,7 @@ public class Server {
 
 	public void run() throws IOException {
 		while (true) {
-			Player newPlayer = new Player(server.accept());
+			Player newPlayer = new Player(this, server.accept());
 			new Thread(newPlayer).start();
 		}
 	}

@@ -11,4 +11,8 @@ public class GameHandler {
 
 	public void setPlayer1(Player newPlayer1) { player1 = newPlayer1; }
 	public void setPlayer2(Player newPlayer2) { player2 = newPlayer2; }
+
+	public void startGame() {
+		// TODO: send OP_RESPONSE_GAME to players
+	}
 }

@@ -5,6 +5,8 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 
 public class Player implements Runnable {
+	public static final String PAYLOAD_DELIMITER = ";";
+
 	// Request:  Queue for game
 	// Response: Queued
 	public static final String OP_REQUEST_GAME        = "0";
@@ -21,16 +23,36 @@ public class Player implements Runnable {
 	private Socket socket;
 	private BufferedReader in;
 	private PrintWriter out;
+	private Server server;
 	private GameHandler game;
 
-	public Player(Socket socket) throws IOException {
+	public Player(Server server, Socket socket) throws IOException {
 		this.socket = socket;
 		this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		this.out = new PrintWriter(socket.getOutputStream(), true);
+		this.server = server;
 		this.game = null;
 	}
 
 	public void run() {
-		// TODO: handle like literally everything lmao
+		String payloadStr;
+		while ((payloadStr = in.readLine()) != null) {
+			String[] payload = payloadStr.split(PAYLOAD_DELIMITER);
+			String opcode = payload[0];
+
+			if (opcode.equals(OP_REQUEST_GAME)) {
+				if (server.getGameQueue() == null) {
+					GameHandler newGame = new GameHandler(this, null);
+					server.setGameQueue(newGame);
+					game = newGame;
+					continue;
+				}
+
+				game = server.getGameQueue();
+				game.setPlayer2(this);
+				game.startGame();
+				server.addGame(game);
+			}
+		}
 	}
 }
