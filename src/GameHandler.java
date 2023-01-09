@@ -13,6 +13,8 @@ public class GameHandler {
 	public void setPlayer2(Player newPlayer2) { player2 = newPlayer2; }
 
 	public void startGame() {
-		// TODO: send OP_RESPONSE_GAME to players
+		player1.send(Player.OP_RESPONSE_GAME);
+		player2.send(Player.OP_RESPONSE_GAME);
+		player2.send(Player.OP_REQUEST_MOVE);
 	}
 }

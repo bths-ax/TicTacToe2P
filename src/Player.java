@@ -20,39 +20,46 @@ public class Player implements Runnable {
 	// Response: Game ended
 	public static final String OP_RESPONSE_GAME_ENDED = "4";
 
-	private Socket socket;
-	private BufferedReader in;
-	private PrintWriter out;
 	private Server server;
 	private GameHandler game;
 
+	private Socket socket;
+	private BufferedReader in;
+	private PrintWriter out;
+
 	public Player(Server server, Socket socket) throws IOException {
+		this.server = server;
+		this.game = null;
 		this.socket = socket;
 		this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		this.out = new PrintWriter(socket.getOutputStream(), true);
-		this.server = server;
-		this.game = null;
+	}
+
+	public void send(String data) {
+		out.println(data);
 	}
 
 	public void run() {
-		String payloadStr;
-		while ((payloadStr = in.readLine()) != null) {
-			String[] payload = payloadStr.split(PAYLOAD_DELIMITER);
-			String opcode = payload[0];
+		try {
+			String payloadStr;
+			while ((payloadStr = in.readLine()) != null) {
+				String[] payload = payloadStr.split(PAYLOAD_DELIMITER);
+				String opcode = payload[0];
 
-			if (opcode.equals(OP_REQUEST_GAME)) {
-				if (server.getGameQueue() == null) {
-					GameHandler newGame = new GameHandler(this, null);
-					server.setGameQueue(newGame);
-					game = newGame;
-					continue;
+				if (opcode.equals(OP_REQUEST_GAME)) {
+					if (server.getGameQueue() == null) {
+						GameHandler newGame = new GameHandler(this, null);
+						server.setGameQueue(newGame);
+						game = newGame;
+						continue;
+					}
+
+					game = server.getGameQueue();
+					game.setPlayer2(this);
+					game.startGame();
+					server.addGame(game);
 				}
-
-				game = server.getGameQueue();
-				game.setPlayer2(this);
-				game.startGame();
-				server.addGame(game);
 			}
-		}
+		} catch (IOException _e) {}
 	}
 }
