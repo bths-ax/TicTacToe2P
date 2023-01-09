@@ -47,6 +47,7 @@ public class Player implements Runnable {
 				String opcode = payload[0];
 
 				if (opcode.equals(OP_REQUEST_GAME)) {
+					// Create new game if none in queue
 					if (server.getGameQueue() == null) {
 						GameHandler newGame = new GameHandler(this, null);
 						server.setGameQueue(newGame);
@@ -54,12 +55,45 @@ public class Player implements Runnable {
 						continue;
 					}
 
+					// Enter queued game if one exists
 					game = server.getGameQueue();
 					game.setPlayer2(this);
 					game.startGame();
 					server.addGame(game);
 				}
+
+				else if (opcode.equals(OP_REQUEST_MOVE)) {
+					// Check if its the players turn
+					if (game.getTurn() != this) {
+						send(OP_REQUEST_MOVE + PAYLOAD_DELIMITER + "NotUserTurn");
+						continue;
+					}
+
+					// Check if the placement row and column were sent as payload data
+					int placementRow, placementCol;
+					try {
+						placementRow = Integer.parseInt(payload[1]);
+						placementCol = Integer.parseInt(payload[2]);
+					} catch (Exception _e) {
+						send(OP_REQUEST_MOVE + PAYLOAD_DELIMITER + "InvalidPayloadData");
+						continue;
+					}
+
+					// Check if the placement row and column are valid indexes
+					if (!(0 <= placementRow && placementRow < 3 && 0 <= placementCol && placementCol < 3)) {
+						send(OP_REQUEST_MOVE + PAYLOAD_DELIMITER + "InvalidIndices");
+						continue;
+					}
+
+					// Successfully placed move
+					game.move(placementRow, placementCol);
+					send(OP_REQUEST_MOVE + PAYLOAD_DELIMITER + "Success");
+
+					// TODO: Check for winners
+				}
 			}
 		} catch (IOException _e) {}
+
+		// TODO: Check for disconnections
 	}
 }
