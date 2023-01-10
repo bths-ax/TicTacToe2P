@@ -85,11 +85,17 @@ public class Player implements Runnable {
 						continue;
 					}
 
+					// Check if the placement spot is empty
+					if (!game.check(placementRow, placementCol)) {
+						send(OP_REQUEST_MOVE + PAYLOAD_DELIMITER + "CannotPlace");
+						continue;
+					}
+
 					// Successfully placed move
 					game.move(placementRow, placementCol);
 					send(OP_REQUEST_MOVE + PAYLOAD_DELIMITER + "Success");
 
-					// TODO: Check for winners
+					// Check for winners
 				}
 			}
 		} catch (IOException _e) {}

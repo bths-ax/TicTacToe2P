@@ -42,6 +42,10 @@ public class GameHandler {
 		switchTurns();
 	}
 
+	public boolean check(int row, int col) {
+		return game.getPlacement(row, col) == Game.PLAYER_NONE;
+	}
+
 	public void startGame() {
 		player1.send(Player.OP_RESPONSE_GAME);
 		player2.send(Player.OP_RESPONSE_GAME);
