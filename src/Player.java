@@ -35,10 +35,6 @@ public class Player implements Runnable {
 		this.out = new PrintWriter(socket.getOutputStream(), true);
 	}
 
-	public void clearGame() {
-		game = null;
-	}
-
 	public void send(String data) {
 		out.println(data);
 	}
@@ -110,7 +106,6 @@ public class Player implements Runnable {
 
 					// Check for winners
 					if (game.getState().isGameOver()) {
-						// TODO: probably works? idk lol
 						game.endGame();
 						break;
 					}
@@ -118,6 +113,10 @@ public class Player implements Runnable {
 			}
 		} catch (IOException _e) {}
 
+		end(); // just for good measure ig
+	}
+
+	public void end() {
 		socket.close();
 	}
 }

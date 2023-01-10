@@ -65,7 +65,7 @@ public class GameHandler {
 		player1.send(response);
 		player2.send(response);
 
-		player1.clearGame();
-		player2.clearGame();
+		player1.end();
+		player2.end();
 	}
 }
