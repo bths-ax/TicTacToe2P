@@ -35,6 +35,10 @@ public class Player implements Runnable {
 		this.out = new PrintWriter(socket.getOutputStream(), true);
 	}
 
+	public void clearGame() {
+		game = null;
+	}
+
 	public void send(String data) {
 		out.println(data);
 	}
@@ -103,13 +107,17 @@ public class Player implements Runnable {
 
 					// Successfully placed move
 					game.move(placementRow, placementCol);
-					send(OP_REQUEST_MOVE + PAYLOAD_DELIMITER + "Success");
 
-					// TODO: Check for winners
+					// Check for winners
+					if (game.getState().isGameOver()) {
+						// TODO: probably works? idk lol
+						game.endGame();
+						break;
+					}
 				}
 			}
 		} catch (IOException _e) {}
 
-		// TODO: Check for disconnections
+		socket.close();
 	}
 }

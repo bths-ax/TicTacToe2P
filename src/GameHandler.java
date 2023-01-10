@@ -11,6 +11,7 @@ public class GameHandler {
 		this.turn = null;
 	}
 
+	public Game getState() { return game; }
 	public Player getTurn() { return turn; }
 
 	public void setPlayer1(Player newPlayer1) { player1 = newPlayer1; }
@@ -50,5 +51,21 @@ public class GameHandler {
 		player1.send(Player.OP_RESPONSE_GAME);
 		player2.send(Player.OP_RESPONSE_GAME);
 		setTurn(player2);
+	}
+
+	public void endGame() {
+		String response = OP_RESPONSE_GAME_ENDED + PAYLOAD_DELIMITER;
+		if (game.getState().isPlayer1Winner())
+			response += "P1";
+		else if (game.getState().isPlayer2Winner())
+			response += "P2";
+		else
+			response += "Tie";
+
+		player1.send(response);
+		player2.send(response);
+
+		player1.clearGame();
+		player2.clearGame();
 	}
 }
