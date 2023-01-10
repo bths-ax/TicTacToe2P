@@ -54,10 +54,10 @@ public class GameHandler {
 	}
 
 	public void endGame() {
-		String response = OP_RESPONSE_GAME_ENDED + PAYLOAD_DELIMITER;
-		if (game.getState().isPlayer1Winner())
+		String response = Player.OP_RESPONSE_GAME_ENDED + Player.PAYLOAD_DELIMITER;
+		if (game.isPlayer1Winner())
 			response += "P1";
-		else if (game.getState().isPlayer2Winner())
+		else if (game.isPlayer2Winner())
 			response += "P2";
 		else
 			response += "Tie";
