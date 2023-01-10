@@ -117,6 +117,8 @@ public class Player implements Runnable {
 	}
 
 	public void end() {
-		socket.close();
+		try {
+			socket.close();
+		} catch (IOException _e) {}
 	}
 }
