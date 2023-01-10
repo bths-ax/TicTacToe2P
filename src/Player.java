@@ -47,6 +47,11 @@ public class Player implements Runnable {
 				String opcode = payload[0];
 
 				if (opcode.equals(OP_REQUEST_GAME)) {
+					// Check if player is in a game
+					if (game != null) {
+						continue;
+					}
+
 					// Create new game if none in queue
 					if (server.getGameQueue() == null) {
 						GameHandler newGame = new GameHandler(this, null);
@@ -63,6 +68,11 @@ public class Player implements Runnable {
 				}
 
 				else if (opcode.equals(OP_REQUEST_MOVE)) {
+					// Check if player is in a game
+					if (game == null) {
+						continue;
+					}
+
 					// Check if its the players turn
 					if (game.getTurn() != this) {
 						send(OP_REQUEST_MOVE + PAYLOAD_DELIMITER + "NotUserTurn");
@@ -95,7 +105,7 @@ public class Player implements Runnable {
 					game.move(placementRow, placementCol);
 					send(OP_REQUEST_MOVE + PAYLOAD_DELIMITER + "Success");
 
-					// Check for winners
+					// TODO: Check for winners
 				}
 			}
 		} catch (IOException _e) {}
