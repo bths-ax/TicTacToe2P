@@ -16,10 +16,6 @@ public class GameHandler {
 
 	public void setPlayer1(Player newPlayer1) { player1 = newPlayer1; }
 	public void setPlayer2(Player newPlayer2) { player2 = newPlayer2; }
-	public void setTurn(Player newTurn) {
-		turn = newTurn;
-		turn.send(Player.OP_REQUEST_MOVE);
-	}
 
 	private int getPlayerCode() {
 		if (turn == player1) {
@@ -31,9 +27,9 @@ public class GameHandler {
 
 	private void switchTurns() {
 		if (turn == player1) {
-			setTurn(player2);
+			turn = player2;
 		} else {
-			setTurn(player1);
+			turn = player1;
 		}
 	}
 
@@ -41,6 +37,14 @@ public class GameHandler {
 		int playerCode = getPlayerCode();
 		game.setPlacement(row, col, playerCode);
 		switchTurns();
+
+		String response = Player.OP_RESPONSE_MOVE
+			+ Player.PAYLOAD_DELIMITER + row
+			+ Player.PAYLOAD_DELIMITER + col
+			+ playerCode;
+
+		player1.send(response);
+		player2.send(response);
 	}
 
 	public boolean check(int row, int col) {
@@ -50,7 +54,8 @@ public class GameHandler {
 	public void startGame() {
 		player1.send(Player.OP_RESPONSE_GAME);
 		player2.send(Player.OP_RESPONSE_GAME);
-		setTurn(player2);
+		turn = player2;
+		turn.send(Player.OP_REQUEST_MOVE);
 	}
 
 	public void endGame() {

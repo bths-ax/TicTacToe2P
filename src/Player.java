@@ -109,6 +109,9 @@ public class Player implements Runnable {
 						game.endGame();
 						break;
 					}
+
+					// Request move from next player
+					game.getTurn().send(OP_REQUEST_MOVE);
 				}
 			}
 		} catch (IOException _e) {}
