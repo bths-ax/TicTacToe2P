@@ -52,8 +52,8 @@ public class GameHandler {
 	}
 
 	public void startGame() {
-		player1.send(Player.OP_RESPONSE_GAME);
-		player2.send(Player.OP_RESPONSE_GAME);
+		player1.send(Player.OP_RESPONSE_GAME + Player.PAYLOAD_DELIMITER + Game.PLAYER_ONE);
+		player2.send(Player.OP_RESPONSE_GAME + Player.PAYLOAD_DELIMITER + Game.PLAYER_TWO);
 		turn = player2;
 		turn.send(Player.OP_REQUEST_MOVE);
 	}
@@ -61,11 +61,11 @@ public class GameHandler {
 	public void endGame() {
 		String response = Player.OP_RESPONSE_GAME_ENDED + Player.PAYLOAD_DELIMITER;
 		if (game.isPlayer1Winner())
-			response += "P1";
+			response += Game.PLAYER_ONE;
 		else if (game.isPlayer2Winner())
-			response += "P2";
+			response += Game.PLAYER_TWO;
 		else
-			response += "Tie";
+			response += Game.PLAYER_NONE;
 
 		player1.send(response);
 		player2.send(response);
