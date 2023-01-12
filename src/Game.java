@@ -25,15 +25,17 @@ public class Game {
 
 	public String toString() {
 		// TODO: prob make this look better but for now idc
+		String stringified = "";
 		for (int row = 0; row < 3; row++) {
 			for (int col = 0; col < 3; col++) {
 				int placement = getPlacement(row, col);
-				if (placement == PLAYER_NONE) System.out.print(" ");
-				else if (placement == PLAYER_ONE) System.out.print("O");
-				else if (placement == PLAYER_TWO) System.out.print("X");
+				if (placement == PLAYER_NONE) stringified += " ";
+				else if (placement == PLAYER_ONE) stringified += "O";
+				else if (placement == PLAYER_TWO) stringified += "X";
 			}
-			System.out.println();
+			stringified += "\n";
 		}
+		return stringified;
 	}
 
 	private int checkLine(int startRow, int startCol, int offsetRow, int offsetCol) {
