@@ -35,10 +35,9 @@ public class Server {
 			return;
 		}
 
-		System.out.println("Starting server on port " + args[0]);
-
 		try {
 			Server server = new Server(Integer.parseInt(args[0]));
+			System.out.println("Started server on port " + args[0]);
 			server.run();
 		} catch (Exception _e) {}
 	}
