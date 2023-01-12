@@ -17,7 +17,24 @@ public class Game {
 		board[row][col] = player;
 	}
 
-	// TODO: toString() for Client
+	public void clear() {
+		for (int i = 0; i < 3; i++) for (int j = 0; j < 3; j++) {
+			board[i][j] = PLAYER_NONE;
+		}
+	}
+
+	public String toString() {
+		// TODO: prob make this look better but for now idc
+		for (int row = 0; row < 3; row++) {
+			for (int col = 0; col < 3; col++) {
+				int placement = getPlacement(row, col);
+				if (placement == PLAYER_NONE) System.out.print(" ");
+				else if (placement == PLAYER_ONE) System.out.print("O");
+				else if (placement == PLAYER_TWO) System.out.print("X");
+			}
+			System.out.println();
+		}
+	}
 
 	private int checkLine(int startRow, int startCol, int offsetRow, int offsetCol) {
 		int startPlacement = getPlacement(startRow, startCol);
