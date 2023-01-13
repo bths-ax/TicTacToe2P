@@ -95,8 +95,6 @@ public class Client {
 	}
 
 	public static void main(String[] args) {
-		/* TESTING */ args = new String[] { "127.0.0.1", "6969" };
-
 		if (args.length < 2) {
 			System.out.println("Usage: java Client <host> <port>");
 			return;

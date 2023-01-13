@@ -22,8 +22,6 @@ public class Server {
 
 
 	public static void main(String[] args) {
-		/* TESTING */ args = new String[] { "6969" };
-
 		if (args.length < 1) {
 			System.out.println("Usage: java Server <port>");
 			return;
