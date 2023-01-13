@@ -50,7 +50,7 @@ public class Client {
 			response = getResponseData(responseStr);
 			String opcode = response[0];
 
-			if (opcode == Player.OP_REQUEST_MOVE) {
+			if (opcode.equals(Player.OP_REQUEST_MOVE)) {
 				if (response.length > 1) {
 					System.out.println(response[1] + ". Try again");
 				}
@@ -60,8 +60,8 @@ public class Client {
 					System.out.print("Your move (Row, Col): ");
 					String[] move = scanner.nextLine().split(",");
 					try {
-						moveRow = Integer.parseInt(move[0].trim());
-						moveCol = Integer.parseInt(move[1].trim());
+						moveRow = Integer.parseInt(move[0].trim()) - 1;
+						moveCol = Integer.parseInt(move[1].trim()) - 1;
 						break;
 					} catch (Exception _e) {
 						System.out.println("Invalid format. Try again");
@@ -73,11 +73,11 @@ public class Client {
 						+ Player.PAYLOAD_DELIMITER + moveCol);
 			}
 
-			else if (opcode == Player.OP_RESPONSE_MOVE) {
+			else if (opcode.equals(Player.OP_RESPONSE_MOVE)) {
 				System.out.println("got move thing " + responseStr);
 			}
 
-			else if (opcode == Player.OP_RESPONSE_GAME_ENDED) {
+			else if (opcode.equals(Player.OP_RESPONSE_GAME_ENDED)) {
 			}
 		}
 	}
