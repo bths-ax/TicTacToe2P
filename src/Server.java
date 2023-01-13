@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Server {
 	private ServerSocket server;
-	private ArrayList<GameHandler> games;
+	private ArrayList<GameHandler> games; // TODO: what did i make this for is this really needed
 	private GameHandler gameQueue;
 
 	public Server(int port) throws IOException {
