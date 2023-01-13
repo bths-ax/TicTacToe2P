@@ -64,7 +64,6 @@ public class Player implements Runnable {
 					game = server.getGameQueue();
 					game.setPlayer2(this);
 					game.startGame();
-					server.addGame(game);
 					server.setGameQueue(null);
 				}
 
