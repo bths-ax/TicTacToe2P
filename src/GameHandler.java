@@ -41,7 +41,7 @@ public class GameHandler {
 		String response = Player.OP_RESPONSE_MOVE
 			+ Player.PAYLOAD_DELIMITER + row
 			+ Player.PAYLOAD_DELIMITER + col
-			+ playerCode;
+			+ Player.PAYLOAD_DELIMITER + playerCode;
 
 		player1.send(response);
 		player2.send(response);

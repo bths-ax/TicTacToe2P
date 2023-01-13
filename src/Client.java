@@ -7,6 +7,7 @@ public class Client {
 	private Socket socket;
 	private BufferedReader in;
 	private PrintWriter out;
+	private int playerCode;
 
 	public Client(String host, int port) throws Exception {
 		this.game = new Game();
@@ -33,11 +34,10 @@ public class Client {
 		System.out.println("Waiting for game...");
 
 		while ((responseStr = in.readLine()) != null
-			&& !responseStr.startsWith(Player.OP_RESPONSE_GAME))
-			System.out.println("FIRST: " + responseStr);
+			&& !responseStr.startsWith(Player.OP_RESPONSE_GAME));
 
 		response = getResponseData(responseStr);
-		int playerCode = Integer.parseInt(response[1]);
+		playerCode = Integer.parseInt(response[1]);
 		String playerStr = "X";
 		if (playerCode == Game.PLAYER_ONE)
 			playerStr = "O";
@@ -46,7 +46,6 @@ public class Client {
 		System.out.println("You are " + playerStr);
 
 		while ((responseStr = in.readLine()) != null) {
-			System.out.println("SECOND: " + responseStr);
 			response = getResponseData(responseStr);
 			String opcode = response[0];
 
@@ -74,10 +73,23 @@ public class Client {
 			}
 
 			else if (opcode.equals(Player.OP_RESPONSE_MOVE)) {
-				System.out.println("got move thing " + responseStr);
+				int moveRow = Integer.parseInt(response[1]);
+				int moveCol = Integer.parseInt(response[2]);
+				int movePlr = Integer.parseInt(response[3]);
+
+				game.setPlacement(moveRow, moveCol, movePlr);
+				System.out.println(game);
 			}
 
 			else if (opcode.equals(Player.OP_RESPONSE_GAME_ENDED)) {
+				int winner = Integer.parseInt(response[1]);
+
+				if (winner == Game.PLAYER_NONE)
+					System.out.println("Tie");
+				else if (winner == playerCode)
+					System.out.println("You win");
+				else
+					System.out.println("You lose");
 			}
 		}
 	}

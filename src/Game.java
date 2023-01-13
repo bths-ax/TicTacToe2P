@@ -29,7 +29,7 @@ public class Game {
 		for (int row = 0; row < 3; row++) {
 			for (int col = 0; col < 3; col++) {
 				int placement = getPlacement(row, col);
-				if (placement == PLAYER_NONE) stringified += " ";
+				if (placement == PLAYER_NONE) stringified += ".";
 				else if (placement == PLAYER_ONE) stringified += "O";
 				else if (placement == PLAYER_TWO) stringified += "X";
 			}
