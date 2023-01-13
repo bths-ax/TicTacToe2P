@@ -65,6 +65,7 @@ public class Player implements Runnable {
 					game.setPlayer2(this);
 					game.startGame();
 					server.addGame(game);
+					server.setGameQueue(null);
 				}
 
 				else if (opcode.equals(OP_REQUEST_MOVE)) {
