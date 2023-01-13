@@ -1,3 +1,4 @@
+import java.util.Scanner;
 import java.net.*;
 import java.io.*;
 
@@ -23,6 +24,8 @@ public class Client {
 	}
 
 	public void run() throws Exception {
+		Scanner scanner = new Scanner(System.in);
+
 		String responseStr;
 		String[] response;
 
@@ -30,7 +33,8 @@ public class Client {
 		System.out.println("Waiting for game...");
 
 		while ((responseStr = in.readLine()) != null
-			&& !responseStr.startsWith(Player.OP_RESPONSE_GAME));
+			&& !responseStr.startsWith(Player.OP_RESPONSE_GAME))
+			System.out.println("FIRST: " + responseStr);
 
 		response = getResponseData(responseStr);
 		int playerCode = Integer.parseInt(response[1]);
@@ -40,6 +44,42 @@ public class Client {
 
 		System.out.println("Game starting");
 		System.out.println("You are " + playerStr);
+
+		while ((responseStr = in.readLine()) != null) {
+			System.out.println("SECOND: " + responseStr);
+			response = getResponseData(responseStr);
+			String opcode = response[0];
+
+			if (opcode == Player.OP_REQUEST_MOVE) {
+				if (response.length > 1) {
+					System.out.println(response[1] + ". Try again");
+				}
+
+				int moveRow, moveCol;
+				while (true) {
+					System.out.print("Your move (Row, Col): ");
+					String[] move = scanner.nextLine().split(",");
+					try {
+						moveRow = Integer.parseInt(move[0].trim());
+						moveCol = Integer.parseInt(move[1].trim());
+						break;
+					} catch (Exception _e) {
+						System.out.println("Invalid format. Try again");
+					}
+				}
+
+				send(Player.OP_REQUEST_MOVE
+						+ Player.PAYLOAD_DELIMITER + moveRow
+						+ Player.PAYLOAD_DELIMITER + moveCol);
+			}
+
+			else if (opcode == Player.OP_RESPONSE_MOVE) {
+				System.out.println("got move thing " + responseStr);
+			}
+
+			else if (opcode == Player.OP_RESPONSE_GAME_ENDED) {
+			}
+		}
 	}
 
 	public static void main(String[] args) {
